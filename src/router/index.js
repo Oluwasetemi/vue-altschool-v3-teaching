@@ -1,3 +1,4 @@
+import RepoLayoutView from '@/views/repo/RepoLayoutView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
@@ -6,11 +7,36 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: HomeView,
+      props: (route) => ({ page: parseInt(route.query.page) || 1 }),
       meta: {
         title: 'Home',
         description: 'This is the home page'
+      },
+    },
+    {
+      path: '/repo/:name/:id',
+      name: 'RepoLayout',
+      props: true,
+      component: RepoLayoutView,
+      children: [
+        {
+          path: '',
+          name: 'SingleRepoView',
+          component: () => import('../views/SingleRepoView.vue')
+        },
+        {
+          path: 'details',
+          name: 'RepoDetails',
+          component: () => import('../views/RepoDetailsView.vue')
+        }
+      ]
+    },
+    {
+      path: '/repo/:afterEvent(.*)',
+      redirect: (to) => {
+        return { path: '/repo/' + to.params.afterEvent }
       }
     },
     {
@@ -18,29 +44,21 @@ const router = createRouter({
       name: 'help',
       component: () => import('../views/HelpView.vue')
     },
-    // {
-    //   path: '/user',
-    //   name: 'user',
-    //   children: [
-    //     {
-    //       path: 'profile',
-    //       name: 'profile',
-    //       component: () => import('../views/ProfileView.vue')
-    //     }
-    //   ],
-    // },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    },
     {
       path: '/:catchAll(.*)',
       name: 'not-found',
       component: () => import('../views/NotFoundView.vue')
+    },
+    {
+      path: '/404/:resource',
+      name: '404Resource',
+      component: () => import('../views/NotFoundView.vue'),
+      props: true
+    },
+    {
+      path: '/network-error',
+      name: 'NetworkError',
+      component: () => import('../views/NetworkErrorView.vue')
     }
   ]
 })

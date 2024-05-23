@@ -1,10 +1,11 @@
 <script setup>
 import AnotherComponent from '../components/AnotherComponent.vue'
+
+defineProps(['page'])
 </script>
 
 <template>
   <main>
-    <!-- <TheWelcome /> -->
-    <AnotherComponent />
+    <AnotherComponent :page="page" />
   </main>
 </template>
