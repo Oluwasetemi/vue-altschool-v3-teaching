@@ -1,6 +1,7 @@
 import RepoLayoutView from '@/views/repo/RepoLayoutView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import NetworkErrorView from '../views/NetworkErrorView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,7 +59,7 @@ const router = createRouter({
     {
       path: '/network-error',
       name: 'NetworkError',
-      component: () => import('../views/NetworkErrorView.vue')
+      component: NetworkErrorView
     }
   ]
 })

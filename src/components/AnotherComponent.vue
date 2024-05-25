@@ -1,9 +1,9 @@
 <script setup>
-import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
+import { extractPageNumber, parseLinkHeader } from '@/utils'
+import { computed, onMounted, reactive, ref, watchEffect } from 'vue'
 import api from '../services/api'
 import RepoList from './RepoList.vue'
 import Pagination from './RepoPagination.vue'
-import { parseLinkHeader, extractPageNumber } from '@/utils'
 
 const username = ref('Oluwasetemi')
 const github = reactive({
@@ -37,7 +37,7 @@ onMounted(() => {
     api.getUser(username.value).then((user) => {
       github.user = user.data
     })
-    api.getRepos(username.value, { page: page.value }).then((repos) => {
+    api.getRepos(username.value, { page: page.value, per_page: 20 }).then((repos) => {
       const parsedLink = parseLinkHeader(repos.headers.link)
       github.totalPages = extractPageNumber(parsedLink?.last) || page
       github.repos = repos.data

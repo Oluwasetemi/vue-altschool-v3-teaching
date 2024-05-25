@@ -22,7 +22,7 @@ onMounted(() => {
       if (error.response && error.response.status == 404) {
         router.push({
           name: '404Resource',
-          params: { resource: 'repo' }
+          params: { resource: id.value }
         })
       } else {
         router.push({ name: 'NetworkError' })
